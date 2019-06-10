@@ -1,13 +1,48 @@
-const {makeExecutableSchema} = require('graphql-tools');
+var {GraphQLObjectType,
+  GraphQLSchema,
+  GraphQLString,
+  GraphQLInt,
+  GraphQLList}
+   =require('graphql') ;
+var db = require("../../config/db");
 
-// 在这里定义所有的类型
-const typeDefs = `
-  type Link {
-    id: ID!
-    url: String!
-    description: String!
+const Column = new GraphQLObjectType({
+  name:'Column',
+  description:'鏍忕洰鍚嶇О',
+  fields:{
+    cid:{
+      type:GraphQLInt
+    },
+    cname:{
+      type:GraphQLString
+    }
   }
-`;
+});
 
-// 根据所有类型来生成模式对象
-module.exports = makeExecutableSchema({typeDefs});
+const Query = new GraphQLObjectType({
+  name:'Query',
+  fields:{
+    column:{
+      type:new GraphQLList(Column),
+      args:{
+        cname:{
+          type:GraphQLString,
+        }
+      },
+      resolve:function(_,args){
+        async function test(){
+          return await new Promise((resolve,reject)=>{
+            db.query("select * from table_column",function(err,data){resolve(data)});
+          });
+        }
+        return test();
+      }
+    }
+  }
+});
+
+const Schema = new GraphQLSchema({
+  query: Query
+});
+
+module.exports = Schema;
