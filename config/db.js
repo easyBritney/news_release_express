@@ -15,4 +15,16 @@ function query(sql,callback){
     });
 }
 
-exports.query = query;
+function queryParas(sql,paras,callback){
+    pool.getConnection(function(err,connection){
+        connection.query(sql,paras,function(err,rows){
+            callback(err,rows);
+            connection.release();
+        });
+    });
+}
+
+module.exports = {
+    query,
+    queryParas
+};
