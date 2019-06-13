@@ -32,4 +32,28 @@ const Article = new GraphQLObjectType({
     }
   });
 
-  module.exports = Article;
+  const ArticleInput = new GraphQLInputObjectType({
+    name:'ArticleInput',
+    fields:{
+      title:{
+        type:GraphQLString
+      },
+      content:{
+        type:GraphQLString
+      },
+      aid:{
+        type:GraphQLInt
+      },
+      cid:{
+        type:GraphQLInt
+      },
+      state:{
+        type:GraphQLString
+      }
+    }
+  })
+
+  module.exports = {
+    Article,
+    ArticleInput
+  };

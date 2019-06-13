@@ -17,8 +17,6 @@ const PORT = 8090
 
 function loggingMiddleware(req, res, next) {
     console.log(req.headers.origin);
-    console.log(req.headers.cookie);
-    console.log(req.session);
 
     res.header('Access-Control-Allow-Origin', req.headers.origin);
     res.header('Access-Control-Allow-Headers', 'Content-Type,Origin,Accept,X-Requested-With,CONTEXTPATH');

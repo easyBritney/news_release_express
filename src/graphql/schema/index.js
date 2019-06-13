@@ -8,12 +8,13 @@ var {GraphQLObjectType,
    =require('graphql') ;
 var db = require("../../../config/db");
 
-const Article = require('../../article/scheme');
+const User = require('../../login/scheme');
+const ArticleModel = require('../../article/scheme');
 const ColumnModel = require('../../column/scheme');
 const ColumnService = require('../../column');
-const User = require('../../login/scheme');
+const UserControl = require('../../login/loginControl');
+const EditorControl = require('../../editor/eidtorControl')
 
-const UserServer = require('../../login/index');
 
 const Query = new GraphQLObjectType({
   name:'Query',
@@ -25,7 +26,7 @@ const Query = new GraphQLObjectType({
           type:GraphQLString,
         }
       },
-      resolve:function(_,args){ //,{ rootValue: { ip,cookie,session } }
+      resolve:function(_,args){
         async function test(){
           return await new Promise((resolve,reject)=>{
             db.query("select * from table_column",function(err,data){resolve(data)});
@@ -35,7 +36,7 @@ const Query = new GraphQLObjectType({
       }
     },
     article:{
-      type:new GraphQLList(Article),
+      type:new GraphQLList(ArticleModel.Article),
       args:{
         aid:{
           type:GraphQLInt
@@ -84,31 +85,36 @@ const Mutation = new GraphQLObjectType({
         userInfo:{type:User.UserInput}
       },
       resolve:(source,{userInfo},req,res)=>{
-        return UserServer.checkLogin(userInfo.uname,userInfo.pwd)
-        .then((data)=>{
-            return new Promise((resolve,reject)=>{
-              var user = eval(JSON.stringify(data));
-              console.log("data:",data);
-              console.log("req:",req);
-              if(user[0].uname!=null)
-              {
-                req.session['uname'] = userInfo.uname;
-                req.session['level'] = user[0].level;
-                req.session.cookie('level',user[0].level,{
-                  path: '/',
-                  maxAge: 360,
-                });
-                
-                console.log(req.session);
-                resolve(user[0]);
-              } 
-              else{
-                resolve(null);
-              }
-            });
-        });
+        return UserControl.checkLogin(userInfo,req,res);
       }
     },
+    addArticle:{
+      type:ArticleModel.Article,
+      args:{
+        articleInfo:{type:ArticleModel.ArticleInput}
+      },
+      resolve:(source,{articleInfo},req,res)=>{
+        return EditorControl.addArticle(articleInfo,req,res);
+      }
+    },
+    changeState:{
+      type:ArticleModel.Article,
+      args:{
+        articleInfo:{type:ArticleModel.ArticleInput}
+      },
+      resolve:(source,{articleInfo},req,res)=>{
+        return EditorControl.changeState(articleInfo,req,res);
+      }
+    },
+    modifyArticle:{
+      type:ArticleModel.Article,
+      args:{
+        articleInfo:{type:ArticleModel.ArticleInput}
+      },
+      resolve:(source,{articleInfo},req,res)=>{
+        return EditorControl.modifyArticle(articleInfo,req,res);
+      }
+    }
     
   })
 })
