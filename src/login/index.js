@@ -7,7 +7,6 @@ var checkLogin= async function(uname,pwd){
             });
         });
 }
-
 module.exports={
     checkLogin
 }

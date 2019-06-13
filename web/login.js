@@ -35,12 +35,12 @@ function login(){
               }),
             success: function (result,status,xhr) {
                 console.log(result);    
-                if (result.data.checkLogin[0].level != null) {
+                if (result.data.checkLogin != null) {
                     var win = window;
                     while(win != win.top){
                         win = win.top;
                     }
-                   // win.location.href = xhr.getResponseHeader("CONTEXTPATH");
+                    win.location.href = "index.html";
                 }
                 ;
             },

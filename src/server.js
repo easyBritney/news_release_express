@@ -6,6 +6,7 @@ const cors = require('cors');
 
 var app = express();
 
+
 const corsOption = {
     origin(origin,callback){
         callback(null,true);
@@ -44,16 +45,15 @@ app.listen(PORT, () => {
 app.use(loggingMiddleware);
 
 app.use(session({ 
-    secret: 'secret', 
+    secret: 'SECRET', 
     resave : true,
     saveUninitialized: false,
     cookie: { path:'/',maxAge: 600 }
 }));
 app.use(loggingMiddleware);
 
-app.use("/",graphqlHTTP({
+app.use("/",graphqlHTTP((request)=>({
     schema:schema,
     graphiql:true,
-    rootValue: root
-}));
+})));
 
