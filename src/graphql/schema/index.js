@@ -7,10 +7,10 @@ var {GraphQLObjectType,
   GraphQLInputObjectType}
    =require('graphql') ;
 var db = require("../../../config/db");
-var login =require("../../login");
 
 const Article = require('../../article/scheme');
-const Column = require('../../column/scheme');
+const ColumnModel = require('../../column/scheme');
+const ColumnService = require('../../column');
 const User = require('../../login/scheme');
 
 const UserServer = require('../../login/index');
@@ -19,7 +19,7 @@ const Query = new GraphQLObjectType({
   name:'Query',
   fields:{
     column:{
-      type:new GraphQLList(Column),
+      type:new GraphQLList(ColumnModel.Column),
       args:{
         cname:{
           type:GraphQLString,
@@ -65,35 +65,51 @@ const Query = new GraphQLObjectType({
   }
 });
 
-const ColumnInput = new GraphQLInputObjectType({
-  name:"ColumnInput",
-  fields:{
-    cname:{type:new GraphQLNonNull(GraphQLString)}
-  }
-})
-
 const Mutation = new GraphQLObjectType({
   name:"Mutation",
   fields:()=>({
     addColumn:{
-      type:Column,
+      type:ColumnModel.Column,
       args:{
-        columnInfo:{type:ColumnInput},
+        columnInfo:{type:ColumnModel.ColumnInput},
       },
-      resolve:(source,{columnInfo},{rootValue:{cookie}})=>{
-        console.log("cookie:"+cookie);
-        console.log(columnInfo);
+      resolve:(source,{columnInfo},{rootValue:{req,res}})=>{
+        console.log("cookie:"+req.headers.cookies);
+        return ColumnService.addColumn(columnInfo.cname);
       }
     },
     checkLogin:{
-      type:new GraphQLList(User.User),
+      type:User.User,
       args:{
         userInfo:{type:User.UserInput}
       },
-      resolve:(source,{userInfo},{rootValue})=>{
-        return UserServer.checkLogin(userInfo.uname,userInfo.pwd);
+      resolve:(source,{userInfo},req,res)=>{
+        return UserServer.checkLogin(userInfo.uname,userInfo.pwd)
+        .then((data)=>{
+            return new Promise((resolve,reject)=>{
+              var user = eval(JSON.stringify(data));
+              console.log("data:",data);
+              console.log("req:",req);
+              if(user[0].uname!=null)
+              {
+                req.session['uname'] = userInfo.uname;
+                req.session['level'] = user[0].level;
+                req.session.cookie('level',user[0].level,{
+                  path: '/',
+                  maxAge: 360,
+                });
+                
+                console.log(req.session);
+                resolve(user[0]);
+              } 
+              else{
+                resolve(null);
+              }
+            });
+        });
       }
-    }
+    },
+    
   })
 })
 

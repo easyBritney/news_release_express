@@ -6,7 +6,7 @@ var {GraphQLObjectType,
   GraphQLNonNull,
   GraphQLInputObjectType}
    =require('graphql') ;
-   
+
 const Column = new GraphQLObjectType({
   name:'Column',
   description:'栏目名称',
@@ -20,4 +20,16 @@ const Column = new GraphQLObjectType({
   }
 });
 
-module.exports = Column;
+const ColumnInput = new GraphQLInputObjectType({
+  name:'ColumnInput',
+  fields:{
+    cid:{
+      type:GraphQLInt
+    },
+    cname:{
+      type:GraphQLString
+    }
+  }
+})
+
+module.exports = {Column,ColumnInput};
