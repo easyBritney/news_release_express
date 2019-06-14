@@ -16,6 +16,9 @@ const Column = new GraphQLObjectType({
     },
     cname:{
       type:GraphQLString
+    },
+    uname:{
+      type:GraphQLString
     }
   }
 });

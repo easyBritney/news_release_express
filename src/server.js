@@ -41,12 +41,11 @@ app.listen(PORT, () => {
 });
 
 app.use(loggingMiddleware);
-
 app.use(session({ 
     secret: 'SECRET', 
     resave : true,
     saveUninitialized: false,
-    cookie: { path:'/',maxAge: 600 }
+    cookie: { path:'/',maxAge: 1000*60*10 }
 }));
 app.use(loggingMiddleware);
 

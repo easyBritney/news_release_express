@@ -6,12 +6,14 @@ function getColumns(){
         xhrFields: {
             withCredentials: true
         },
-        type: "GET",  
-        url: "http://localhost:10080/columns" ,
+        type: "POST",  
+        url: "http://localhost:8090/graphql" ,
         dataType: "json",
+        contentType:"application/json;charset=UTF-8",
+        data:JSON.stringify({"query":"{column{cid,cname,uname}}"}),
         success: function (result,status,xhr) {
             console.log(result);    
-            app.columns=result;
+            app.columns=result.data.column;
         },
         error : function(e) {
             console.log(e);

@@ -14,8 +14,8 @@ const Article = new GraphQLObjectType({
       aid:{
         type:GraphQLInt
       },
-      eid:{
-        type:GraphQLInt
+      uname:{
+        type:GraphQLString
       },
       cid:{
         type:GraphQLInt

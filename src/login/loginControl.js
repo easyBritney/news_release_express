@@ -13,7 +13,7 @@ var checkLogin=function(userInfo,req,res){
                 req.session['uid']   = user[0].uid;
                 req.res.cookie('level',user[0].level,{
                   path: "/",
-                  maxAge: 60*6,
+                  maxAge: 1000*60*3,
                 });
                 
                 console.log(req.session);
@@ -26,4 +26,12 @@ var checkLogin=function(userInfo,req,res){
     });
 }
 
-module.exports={checkLogin}
+getUname=function(req,res){
+  console.log(req.session);
+  if(req.session.uname!=null)
+    return {uname:req.session.uname};
+  else
+    return null;
+}
+
+module.exports={checkLogin,getUname}

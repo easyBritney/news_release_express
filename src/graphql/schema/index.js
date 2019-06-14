@@ -11,7 +11,7 @@ var db = require("../../../config/db");
 const User = require('../../login/scheme');
 const ArticleModel = require('../../article/scheme');
 const ColumnModel = require('../../column/scheme');
-const ColumnService = require('../../column');
+const ColumnService = require('../../column/columnService');
 const UserControl = require('../../login/loginControl');
 const EditorControl = require('../../editor/eidtorControl')
 
@@ -22,17 +22,34 @@ const Query = new GraphQLObjectType({
     column:{
       type:new GraphQLList(ColumnModel.Column),
       args:{
+        cid:{
+          type:GraphQLInt,
+        },
         cname:{
           type:GraphQLString,
+        },
+        uname:{
+          type:GraphQLString
         }
       },
       resolve:function(_,args){
         async function test(){
           return await new Promise((resolve,reject)=>{
-            db.query("select * from table_column",function(err,data){resolve(data)});
+            db.query("select cid,cname,uname from table_column a,table_user b where a.uid=b.uid",function(err,data){resolve(data)});
           });
         }
         return test();
+      }
+    },
+    user:{
+      type:User.User,
+      args:{
+        uname:{
+          type:GraphQLString
+        }
+      },
+      resolve:(source,args,req,res)=>{
+        return UserControl.getUname(req,res);
       }
     },
     article:{
@@ -54,13 +71,9 @@ const Query = new GraphQLObjectType({
           type:GraphQLString
         }
       },
-      resolve:function(_,args){ 
-        async function test(){
-          return await new Promise((resolve,reject)=>{
-            db.query("select * from table_article",function(err,data){resolve(data)});
-          });
-        }
-        return test();
+      resolve:function(_,args,req){ 
+        console.log(args);
+        
       }
     }
   }

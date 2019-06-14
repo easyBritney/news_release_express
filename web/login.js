@@ -40,7 +40,7 @@ function login(){
                     while(win != win.top){
                         win = win.top;
                     }
-                    //win.location.href = "index.html";
+                    win.location.href = "index.html";
                 }
                 ;
             },

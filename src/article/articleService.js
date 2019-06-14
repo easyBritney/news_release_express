@@ -20,8 +20,17 @@ var modifyArticle = function(aid,cid,title,content){
     });
 }
 
+var showArticle = function(){
+    return new Promise((resolve,reject)=>{
+          db.query("select aid,title,a.state,a.content,a.time,b.cname,c.uname  from table_article a left join table_column b on(a.cid=b.cid) left join table_user c on (a.eid=c.uid)",function(err,data){
+              resolve(data)
+        });
+    });
+}
+
 module.exports={
     addArticle,
     changeState,
-    modifyArticle
+    modifyArticle,
+    showArticle
 }
