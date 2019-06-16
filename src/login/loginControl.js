@@ -34,4 +34,16 @@ getUname=function(req,res){
     return null;
 }
 
-module.exports={checkLogin,getUname}
+var addUser= function(UserInput,req,res){
+  var uname = UserInput.uname;
+  var level = UserInput.level;
+  var pwd = UserInput.pwd;
+  return UserServer.addUser(uname,pwd,level);
+  // return articleService.addArticle(uid,articleInput.cid,articleInput.state,articleInput.content,articleInput.title); 
+}
+
+module.exports={
+  checkLogin,
+  getUname,
+  addUser
+}
