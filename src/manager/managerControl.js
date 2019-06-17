@@ -26,8 +26,16 @@ var deleteColumn = function(columnInfo,req,res){
         return null;
     return columnService.deleteColumn(columnInfo.cid);
 }
+// changeState
+var changeState = function(articleInfo,req,res){
+    if(filterLevel(req.session.level))
+        return null;
+    return articleService.changeState(articleInfo.aid,articleInfo.state);
+}
 
 var showArticlePublished = function(req){
+    console.log("are you ok");
+    console.log(req.session.level);
     if(filterLevel(req.session.level))
         return null;
     return articleService.showArticle();
@@ -38,4 +46,5 @@ module.exports={
     modifyColumn,
     deleteColumn,
     showArticlePublished,
+    changeState
 }

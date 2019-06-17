@@ -15,11 +15,11 @@ var addArticle= function(articleInput,req,res){
     return articleService.addArticle(uid,articleInput.cid,articleInput.state,articleInput.content,articleInput.title); 
 }
 
-var changeState = function(articleInput,req,res){
-    var level = req.session.level;
-    if(filterLevel(level))
-        return null;
-    return articleService.changeState(articleInput.aid,articleInput.state);
+var changeState = function(articleInfo,req,res){
+    // var level = req.session.level;
+    // if(filterLevel(level))
+    //     return null;
+    return articleService.changeState(articleInfo.aid,articleInfo.state);
 }
 
 var modifyArticle = function(articleInput,req,res){
