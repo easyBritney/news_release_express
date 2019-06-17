@@ -122,6 +122,16 @@ const Mutation = new GraphQLObjectType({
         return UserControl.checkLogin(userInfo,req,res);
       }
     },
+    addUser:{
+      type:User.User,
+      args:{
+        userInfo:{type:User.UserInput}
+      },
+      resolve:(source,{userInfo},req,res)=>{
+        return UserControl.addUser(userInfo,req,res);
+      }
+    },
+
     addArticle:{
       type:ArticleModel.Article,
       args:{
