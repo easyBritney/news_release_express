@@ -7,6 +7,16 @@ var checkLogin= async function(uname,pwd){
             });
         });
 }
+
+var addUser = function(uname,pwd,level){
+    return new Promise((resolve,reject)=>{
+        db.queryParas("insert into table_user(uname,pwd,level) value (?,?,?)",[uname,pwd,level],function(err,data)
+        {resolve(data)}
+        );
+    });
+}
+
 module.exports={
-    checkLogin
+    checkLogin,
+    addUser
 }
