@@ -49,22 +49,26 @@ function saveChanges(element){
     var cname = model.find(".modal-body input").val();
     var cid = model.find(".modal-body a").text();
 
-    console.log(document.cookie); 
+    var query = `mutation {
+        modifyColumn(columnInfo:{cid:`+cid+`,cname:"`+cname+`"}){
+            cid,cname
+        }
+    }`;
 
     $.ajax({
         xhrFields: {
             withCredentials: true
         },
-        crossDomain: true,
-        type: "PUT",  
-        url: "http://localhost:10080/manage/modifycolumn?cid="+cid+"&cname="+cname,
+        type: "POST",  
+        url: "http://localhost:8090/graphql",
         dataType: "json",
+        dataType: "json",
+        contentType:"application/json;charset=UTF-8",
+        data: JSON.stringify({
+            query
+          }),
         success: function (result,status,xhr) {
-            if(result.status=="succeed")
-            {
-                console.log(result);  
-                getColumns();
-            }
+            getColumns();
         },
         error : function(e) {
             console.log(e);
@@ -76,24 +80,27 @@ function saveChanges(element){
 function addColumn(){
     var model = $("#myModal2");
     var cname = model.find(".modal-body input").val();
+
+    var query = `mutation {
+        addColumn(columnInfo:{cname:"`+cname+`"}){
+            cid,cname
+        }
+    }`;
     console.log(cname);
     $.ajax({
         xhrFields: {
             withCredentials: true
         },
-        crossDomain: true,
         type: "POST",  
-        url: "http://localhost:10080/manage/addcolumn?cname="+cname,
+        url: "http://localhost:8090/graphql",
         dataType: "json",
+        dataType: "json",
+        contentType:"application/json;charset=UTF-8",
+        data: JSON.stringify({
+            query
+          }),
         success: function (result,status,xhr) {
-            if(result.status=="succeed")
-            {
-                console.log(result);  
-                getColumns();
-            }
-            else if(result.status=="failed"){
-                alert(result.content);
-            }
+            getColumns();
         },
         error : function(e) {
             console.log(e);
@@ -117,22 +124,25 @@ function deleteColumn(){
     
     console.log(model[0]);
     var cid = model.find(".modal-body a").text();
+    var query = `mutation {
+        deleteColumn(columnInfo:{cid:`+cid+`}){
+            cid,cname
+        }
+    }`;
     $.ajax({
         xhrFields: {
             withCredentials: true
         },
-        type: "DELETE",  
-        url: "http://localhost:10080/manage/deletecolumn?cid="+cid,
+        type: "POST",  
+        url: "http://localhost:8090/graphql",
         dataType: "json",
-        success: function (result,status,xhr) {
-            if(result.status=="succeed")
-            {
-                console.log(result);  
+        dataType: "json",
+        contentType:"application/json;charset=UTF-8",
+        data: JSON.stringify({
+            query
+          }),
+        success: function (result,status,xhr) { 
                 getColumns();
-            }
-            else if(result.status=="failed"){
-                alert(result.content);
-            }
         },
         error : function(e) {
             console.log(e);

@@ -13,7 +13,7 @@
         }),
         success: function (result,status,xhr) {
             console.log(result);
-            if(result.data!=null)
+            if(result.data.user!=null)
                 side_menu.uname=result.data.user.uname;
         },
         error : function(e) {

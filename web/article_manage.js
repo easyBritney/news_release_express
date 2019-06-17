@@ -7,11 +7,11 @@ function getArticlesPublished(){
         dataType: "json",
         contentType:"application/json;charset=UTF-8",
         data: JSON.stringify({
-            'query':'{article{}}'
+            'query':'{article(state:"manager"){aid,title,cname,uname,state}}'
         }),
         success: function (result,status,xhr) {
             console.log(result);    
-            app.articles=result;
+            app.articles=result.data.article;
         },
         error : function(e) {
             console.log(e);
@@ -55,7 +55,7 @@ var app = new Vue({
 
 $('#allowModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget);
-    var aid = button.data('aid'); // Extract info from data-* attributes
+    var aid = button.data('aid');
 
     document.querySelector('#allow').onclick=function(event){
         changeArticleState(aid,"checked");
@@ -64,7 +64,7 @@ $('#allowModal').on('show.bs.modal', function (event) {
 
 $('#rejectModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget)
-    var aid = button.data('aid') // Extract info from data-* attributes
+    var aid = button.data('aid');
 
     document.querySelector('#reject').onclick=function(event){
         changeArticleState(aid,"returned");

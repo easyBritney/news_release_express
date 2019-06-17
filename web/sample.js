@@ -1,12 +1,15 @@
 window.onload =  function(){
     var aid = window.localStorage.getItem("aid");
+    console.log(aid);
     $.ajax({
-        type: "GET",//方法类型
-        url: "http://localhost:10080/article/read/"+aid ,//url
-        dataType: "json",//预期服务器返回
+        type: "POST",  
+        url: "http://localhost:8090/graphql" ,
+        dataType: "json",
+        contentType:"application/json;charset=UTF-8",
+        data:JSON.stringify({"query":"{article(aid:"+aid+"){title,cname,content}}"}),
         success: function (result,status,xhr) {
-            app.article=result;
-            document.getElementById("content").innerHTML=app.article.content1;
+            app.article=result.data.article[0];
+            document.getElementById("content").innerHTML=app.article.content;
         },
         error : function(e) {
             console.log(e);

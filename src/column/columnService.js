@@ -10,7 +10,7 @@ var deleteColumn= async function(cid){
 
 var modifyColumn = function(cid,cname,uid){
     return new Promise((resolve,reject)=>{
-        db.queryParas("UPDATE table_column SET cname=?,uid=? WHERE cid=?",[cname,cid,uid],function(err,data){resolve(data)});
+        db.queryParas("UPDATE table_column SET cname=?,uid=? WHERE cid=?",[cname,uid,cid],function(err,data){resolve(data)});
     });
 }
 

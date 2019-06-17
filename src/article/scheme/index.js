@@ -11,10 +11,16 @@ const Article = new GraphQLObjectType({
     name:'Article',
     description:'文章',
     fields:{
+      uid:{
+        type:GraphQLInt
+      },
       aid:{
         type:GraphQLInt
       },
       uname:{
+        type:GraphQLString
+      },
+      cname:{
         type:GraphQLString
       },
       cid:{
@@ -27,6 +33,9 @@ const Article = new GraphQLObjectType({
         type:GraphQLString
       },
       time:{
+        type:GraphQLString
+      },
+      content:{
         type:GraphQLString
       }
     }

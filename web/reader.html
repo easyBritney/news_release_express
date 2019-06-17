@@ -48,7 +48,7 @@
         <div class="row wrapper border-bottom white-bg page-heading" id="columns-button">
             <div class="col-lg-10" id="app">
                 <h2>栏目</h2>
-                <button class="btn btn-default" v-for="column in columns" v-on:click="chooseColumns" v-bind:cid="column.cid"> {{ column.cname }} </button>
+                <button class="btn btn-default" v-for="column in columns$" v-stream:click="chooseColumns$" v-bind:cid="column.cid"> {{ column.cname }} </button>
             </div>
 
         </div>
@@ -68,14 +68,12 @@
                                     </thead>
 
                                     <tbody id="readertable">
-                                    <!--<tr class="gradeA" v-for="new in news"  v-bind:aid="new.aid" >-->
-                                    <!--<td v-text="new.title"></td>-->
-                                    <!--<td style="max-width: 110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" >abc</td>-->
-                                    <!--<td>-->
-                                    <!--<a class="text-muted" href="sample.html" v-text="new.contnet" onclick="showArticle()"></a>-->
-                                    <!--</td>-->
-                                    <!--<td v-text="new.eid"></td>-->
-                                    <!--</tr>-->
+                                    <!-- <tr v-for="article in articles$" >
+                                        <td v-text="article.title"></td>
+                                        <td v-text="article.uname" v-bind:aid="article.aid"></td>
+                                        <td v-text="article.time"></td>
+                                    </tr> -->
+                                
 
                                     </tbody>
                                 </table>
@@ -98,7 +96,10 @@
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
-    <script src="js/vue.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.5.2/rxjs.umd.min.js"></script> -->
+    <script src="https://unpkg.com/rxjs/bundles/rxjs.umd.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="js/vue-rx.js"></script>
     <script src="navbar.js"></script>
     <script src="reader.js"></script>
 

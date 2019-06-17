@@ -30,8 +30,17 @@ var modifyArticle = function(articleInput,req,res){
     return articleService.modifyArticle(articleInput.aid,articleInput.cid,articleInput.title,articleInput.content);
 }
 
+var showArticle = function(req){
+    var uid = req.session.uid;
+    var level = req.session.level;
+    if(filterLevel(level))
+        return null;
+    return articleService.showArticleByUid(uid);
+}
+
 module.exports={
     addArticle,
     changeState,
-    modifyArticle
+    modifyArticle,
+    showArticle
 }

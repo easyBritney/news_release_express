@@ -13,7 +13,9 @@ const ArticleModel = require('../../article/scheme');
 const ColumnModel = require('../../column/scheme');
 const ColumnService = require('../../column/columnService');
 const UserControl = require('../../login/loginControl');
-const EditorControl = require('../../editor/eidtorControl')
+const EditorControl = require('../../editor/eidtorControl');
+const ManagerControl = require('../../manager/managerControl')
+const ArticleControl = require('../../article/articleControl');
 
 
 const Query = new GraphQLObjectType({
@@ -33,12 +35,9 @@ const Query = new GraphQLObjectType({
         }
       },
       resolve:function(_,args){
-        async function test(){
-          return await new Promise((resolve,reject)=>{
+        return new Promise((resolve,reject)=>{
             db.query("select cid,cname,uname from table_column a,table_user b where a.uid=b.uid",function(err,data){resolve(data)});
           });
-        }
-        return test();
       }
     },
     user:{
@@ -55,8 +54,14 @@ const Query = new GraphQLObjectType({
     article:{
       type:new GraphQLList(ArticleModel.Article),
       args:{
+        uid:{
+          type:GraphQLInt
+        },
         aid:{
           type:GraphQLInt
+        },
+        cname:{
+          type:GraphQLString
         },
         eid:{
           type:GraphQLInt
@@ -67,13 +72,12 @@ const Query = new GraphQLObjectType({
         state:{
           type:GraphQLString
         },
-        title:{
+        content:{
           type:GraphQLString
         }
       },
       resolve:function(_,args,req){ 
-        console.log(args);
-        
+        return ArticleControl.showArticle(args,req);
       }
     }
   }
@@ -87,9 +91,26 @@ const Mutation = new GraphQLObjectType({
       args:{
         columnInfo:{type:ColumnModel.ColumnInput},
       },
-      resolve:(source,{columnInfo},{rootValue:{req,res}})=>{
-        console.log("cookie:"+req.headers.cookies);
-        return ColumnService.addColumn(columnInfo.cname);
+      resolve:(source,{columnInfo},req,res)=>{
+        return ManagerControl.addColumn(columnInfo,req,res);
+      }
+    },
+    deleteColumn:{
+      type:ColumnModel.Column,
+      args:{
+        columnInfo:{type:ColumnModel.ColumnInput},
+      },
+      resolve:(source,{columnInfo},req,res)=>{
+        return ManagerControl.deleteColumn(columnInfo,req,res);
+      }
+    },
+    modifyColumn:{
+      type:ColumnModel.Column,
+      args:{
+        columnInfo:{type:ColumnModel.ColumnInput},
+      },
+      resolve:(source,{columnInfo},req,res)=>{
+        return ManagerControl.modifyColumn(columnInfo,req,res);
       }
     },
     checkLogin:{
