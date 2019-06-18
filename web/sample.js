@@ -1,5 +1,6 @@
 window.onload =  function(){
     var aid = window.localStorage.getItem("aid");
+    window.localStorage.removeItem("aid")
     console.log(aid);
     $.ajax({
         type: "POST",  
