@@ -34,11 +34,11 @@ var changeState = function(articleInfo,req,res){
 }
 
 var showArticlePublished = function(req){
-    console.log("are you ok");
+    // console.log("are you ok");
     console.log(req.session.level);
     if(filterLevel(req.session.level))
         return null;
-    return articleService.showArticle();
+    return articleService.showArticleExpectState("deleted");
 }
 
 module.exports={

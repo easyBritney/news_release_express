@@ -10,6 +10,7 @@ function filterLevel(level)
 var addArticle= function(articleInput,req,res){
     var uid = req.session.uid;
     var level = req.session.level;
+
     if(filterLevel(level))
         return null;
     return articleService.addArticle(uid,articleInput.cid,articleInput.state,articleInput.content,articleInput.title); 

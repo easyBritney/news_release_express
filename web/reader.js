@@ -83,7 +83,7 @@ var app = new Vue({
     ,
     methods:{
         showArticle :function(aid) {
-            return function(evnet) {
+            return function(event) {
                 console.log(aid);
                 window.localStorage.setItem("aid",aid);
                 window.location.href = "sample.html";

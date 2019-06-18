@@ -22,7 +22,7 @@ var modifyArticle = function(aid,cid,title,content){
 
 var showArticle = function(){
     return new Promise((resolve,reject)=>{
-          db.query("select aid,title,a.state,a.content,a.time,b.cname,c.uname  from table_article a left join table_column b on(a.cid=b.cid) left join table_user c on (a.eid=c.uid)",function(err,data){  
+          db.query("select aid,title,a.state,a.content,a.time,b.cname,c.uname  from table_article a left join table_column b on(a.cid=b.cid) left join table_user c on (a.eid=c.uid) where a.state!='saved' ",function(err,data){  
             resolve(data)
         });
     });
@@ -38,7 +38,7 @@ var showArticleExpectState= function(state){
 
 var showArticleByUid= function(uid){
     return new Promise((resolve,reject)=>{
-          db.queryParas("select aid,a.eid,title,a.state,a.content,a.cid,a.time,b.cid,b.cname,c.uname  from table_article a left join table_column b on(a.cid=b.cid) left join table_user c on (a.eid=c.uid) where a.eid=?",[uid],function(err,data){
+          db.queryParas("select aid,a.eid,title,a.state,a.content,a.cid,a.time,b.cid,b.cname,c.uname  from table_article a left join table_column b on(a.cid=b.cid) left join table_user c on (a.eid=c.uid) where a.eid=? and state not in {deleted}",[uid],function(err,data){
               resolve(data)
         });
     });

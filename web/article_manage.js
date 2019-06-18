@@ -58,8 +58,10 @@ var app = new Vue({
     methods:{
         setAid: function (message) {
             // alert(message);
+            // window.localStorage.setItem("aid",message);
+            // window.location.href="article_modify_note.html";
             window.localStorage.setItem("aid",message);
-            window.location.href="article_modify_note.html";
+            window.location.href = "sample.html";
         }
     }
 });
