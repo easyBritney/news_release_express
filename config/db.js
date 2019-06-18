@@ -2,8 +2,8 @@ var mysql = require("mysql");
 var pool = mysql.createPool({
     host:"localhost",
     user:"root",
-    password:"root",
-    database:"NewsManage"
+    password:"jy970911.",
+    database:"news"
 });
 
 function query(sql,callback){

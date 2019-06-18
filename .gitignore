@@ -5,3 +5,4 @@ web/css/*
 web/font-awesome
 web/fonts
 web/js
+config/db.js
