@@ -122,6 +122,9 @@ window.onload =  function(){
 function save(state){
     var title=document.getElementById("title").value;
     var content=$('#content').summernote('code');
+    content = content.replace(/["]/g,"\\\"");
+    console.log(content);
+    
     // var cid=document.getElementById("column").value;
     var query = `mutation {
         addArticle(articleInfo:{cid:`+cid+

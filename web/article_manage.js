@@ -13,7 +13,7 @@ function getArticlesPublished(){
             'query':'{article(state:"manager"){aid,title,cname,uname,state}}'
         }),
         success: function (result,status,xhr) {
-            console.log(result);    
+            // console.log(result);    
             app.articles=result.data.article;
         },
         error : function(e) {
@@ -28,7 +28,7 @@ function changeArticleState(aid,state){
             aid,state
         }
     }`;
-    alert(state)
+    // alert(state)
     $.ajax({
         xhrFields: {
             withCredentials: true
