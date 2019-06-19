@@ -22,7 +22,7 @@ var modifyArticle = function(aid,cid,title,content){
 
 var showArticle = function(){
     return new Promise((resolve,reject)=>{
-          db.query("select aid,title,a.state,a.content,a.time,b.cname,c.uname  from table_article a left join table_column b on(a.cid=b.cid) left join table_user c on (a.eid=c.uid) where a.state!='saved' ",function(err,data){  
+          db.query("select aid,title,a.state,a.content,a.time,b.cname,c.uname  from table_article a left join table_column b on(a.cid=b.cid) left join table_user c on (a.eid=c.uid) where state not in ('deleted') ",function(err,data){  
             resolve(data)
         });
     });
@@ -30,7 +30,7 @@ var showArticle = function(){
 
 var showArticleExpectState= function(state){
     return new Promise((resolve,reject)=>{
-          db.queryParas("select aid,a.eid,title,a.state,a.content,a.cid,a.time,b.cid,b.cname,c.uname  from table_article a left join table_column b on(a.cid=b.cid) left join table_user c on (a.eid=c.uid) where a.state not in (?)",[state],function(err,data){
+          db.queryParas("select aid,a.eid,title,a.state,a.content,a.cid,a.time,b.cid,b.cname,c.uname  from table_article a left join table_column b on(a.cid=b.cid) left join table_user c on (a.eid=c.uid) where a.state not in (?,'saved') ",[state],function(err,data){
             resolve(data)
         });
     });
@@ -38,7 +38,7 @@ var showArticleExpectState= function(state){
 
 var showArticleByUid= function(uid){
     return new Promise((resolve,reject)=>{
-          db.queryParas("select aid,a.eid,title,a.state,a.content,a.cid,a.time,b.cid,b.cname,c.uname  from table_article a left join table_column b on(a.cid=b.cid) left join table_user c on (a.eid=c.uid) where a.eid=? and state not in {deleted}",[uid],function(err,data){
+          db.queryParas("select aid,a.eid,title,a.state,a.content,a.cid,a.time,b.cid,b.cname,c.uname  from table_article a left join table_column b on(a.cid=b.cid) left join table_user c on (a.eid=c.uid) where a.eid=? and state not in ('deleted')",[uid],function(err,data){
               resolve(data)
         });
     });
@@ -46,7 +46,7 @@ var showArticleByUid= function(uid){
  
 var showArticleByCid= function(cid){
     return new Promise((resolve,reject)=>{
-          db.queryParas("select aid,a.eid,title,a.state,a.content,a.cid,a.time,b.cid,b.cname,c.uname  from table_article a left join table_column b on(a.cid=b.cid) left join table_user c on (a.eid=c.uid) where a.cid=?",[cid],function(err,data){
+          db.queryParas("select aid,a.eid,title,a.state,a.content,a.cid,a.time,b.cid,b.cname,c.uname  from table_article a left join table_column b on(a.cid=b.cid) left join table_user c on (a.eid=c.uid) where a.cid=? and a.state in ('checked')",[cid],function(err,data){
               resolve(data)
         });
     });
