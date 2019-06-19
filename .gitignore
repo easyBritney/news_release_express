@@ -6,3 +6,12 @@ web/font-awesome
 web/fonts
 web/js
 config/db.js
+/final/config/*
+!final/src/*
+final/build
+final/node_modules
+final/static
+final/test
+final/package.json
+final/package-lock.json
+final/README
