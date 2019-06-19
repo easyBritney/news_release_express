@@ -23,25 +23,6 @@ window.onload = function(){
     }
 }
 
-// function changeArticleState(aid,state){
-//     $.ajax({
-//         xhrFields: {    
-//             withCredentials: true
-//         },
-//         type: "PUT",  
-//         url: "http://localhost:10080/editor/article/"+aid+"/"+state ,
-//         dataType: "json",
-//         success: function (result,status,xhr) {
-//             console.log(result);
-//             getEditorArticles();
-//         },
-//         error : function(e) {
-//             console.log(e);
-//             alert("异常！");
-//         }
-//     })
-// }
-// articleInfo.aid,articleInfo.state
 function changeArticleState(aid,state){
     var query = `mutation {
         changeState(articleInfo:{aid:`+aid+`,state:"`+state+`"}){
@@ -102,9 +83,8 @@ var app = new Vue({
     },
     methods:{
         setAid: function (message) {
-            // alert(message);
             window.localStorage.setItem("aid",message);
-            window.location.href="article_modify_note.html";
+            window.location.href = "sample.html";
         }
     }
 })
